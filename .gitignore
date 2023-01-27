@@ -7,6 +7,5 @@ node_modules
 .cdk.staging
 cdk.out
 
-# dotenv environment variables file
-.env
-.env.test
+# Context variables
+.context.json
