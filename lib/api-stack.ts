@@ -16,7 +16,9 @@ export class ApiStack extends Stack {
     const api = new aws_apigateway.LambdaRestApi(this, 'api', {
       handler: backend,
       proxy: false
-    });    
+    });
+    
+    console.log(api.url)
 
     lambdas.map(l => {
       let branch = api.root.addResource(l.name);
