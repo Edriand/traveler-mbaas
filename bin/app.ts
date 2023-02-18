@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 import * as cdk from 'aws-cdk-lib';
 import { TablesStack } from '../lib/dynamodb-stack';
+import { ApiStack } from '../lib/api-stack';
 import { Table } from '../interfaces/table.interface';
-import { LambdaFunction } from '../interfaces/lambda.interface';
-import {LambdasStack} from '../lib/lambda-stack';
+import { LambdaFunction, httpFuncts } from '../interfaces/lambda.interface';
 
 const app = new cdk.App();
 
@@ -12,8 +12,9 @@ const tables: Table[] = [
 ];
 
 const lambdas: LambdaFunction[] = [
-    {name: 'getRandomPerson'}
+    {name: 'getRandomPerson', funct: httpFuncts.GET},
+    {name: 'getRandomEvent', funct: httpFuncts.GET}
 ];
 
 new TablesStack(app, 'TablesStack', tables, {});
-new LambdasStack(app, 'LambdasStack', lambdas, {});
+new ApiStack(app, 'ApiStack', lambdas, {});
