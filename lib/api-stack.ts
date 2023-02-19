@@ -3,11 +3,11 @@ import { Construct } from 'constructs';
 import { LambdaFunction } from '../interfaces/lambda.interface';
 
 export class ApiStack extends Stack {
-  constructor(scope: Construct, id: string, lambdas: LambdaFunction[], props?: StackProps) {
-    super(scope, id, props);
+  constructor(scope: Construct, id: string, lambdas: LambdaFunction[], project: string, props?: StackProps) {
+    super(scope, `${project}-${id}`, props);
 
     let backend = new aws_lambda.Function(this, "default", {
-      functionName: `${this.node.tryGetContext('ID')}-${this.node.tryGetContext('ENV')}-lambda-default`,
+      functionName: `${project}-lambda-default`,
       runtime: aws_lambda.Runtime.NODEJS_16_X,
       code: aws_lambda.Code.fromAsset(`lambdas/default`),
       handler: `default.handler`
@@ -24,7 +24,7 @@ export class ApiStack extends Stack {
       let branch = api.root.addResource(l.name);
 
       let lambda = new aws_lambda.Function(this, l.name, {
-        functionName: `${this.node.tryGetContext('ID')}-${this.node.tryGetContext('ENV')}-lambda-${l.name}`,
+        functionName: `${project}-lambda-${l.name}`,
         runtime: aws_lambda.Runtime.NODEJS_16_X,
         code: aws_lambda.Code.fromAsset(`lambdas/${l.name}`),
         handler: `${l.name}.handler`

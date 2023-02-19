@@ -16,5 +16,7 @@ const lambdas: LambdaFunction[] = [
     {name: 'getRandomEvent', funct: httpFuncts.GET}
 ];
 
-new TablesStack(app, 'TablesStack', tables, {});
-new ApiStack(app, 'ApiStack', lambdas, {});
+let project = `${app.node.tryGetContext('ID')}-${app.node.tryGetContext('env')}`;
+
+new TablesStack(app, 'TablesStack', tables, project, {});
+new ApiStack(app, 'ApiStack', lambdas, project, {});
