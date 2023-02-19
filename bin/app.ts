@@ -6,17 +6,19 @@ import { Table } from '../interfaces/table.interface';
 import { LambdaFunction, httpFuncts } from '../interfaces/lambda.interface';
 
 const app = new cdk.App();
+let project = `${app.node.tryGetContext('ID')}-${app.node.tryGetContext('ENV')}`;
 
 const tables: Table[] = [
-    {name: 'city-person', pk: 'city', sk: 'person'}
+    {name: `${project}-table-city-person`, pk: 'city', sk: 'person'}
 ];
 
 const lambdas: LambdaFunction[] = [
-    {name: 'getRandomPerson', funct: httpFuncts.GET},
+    {name: 'getRandomPerson', funct: httpFuncts.GET, enviroments: {
+        TABLE: tables[0].name,
+        REGION: app.node.tryGetContext('REGION')
+    }},
     {name: 'getRandomEvent', funct: httpFuncts.GET}
 ];
-
-let project = `${app.node.tryGetContext('ID')}-${app.node.tryGetContext('ENV')}`;
 
 new TablesStack(app, 'TablesStack', tables, project, {});
 new ApiStack(app, 'ApiStack', lambdas, project, {});

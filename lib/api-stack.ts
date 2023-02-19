@@ -27,7 +27,8 @@ export class ApiStack extends Stack {
         functionName: `${project}-lambda-${l.name}`,
         runtime: aws_lambda.Runtime.NODEJS_16_X,
         code: aws_lambda.Code.fromAsset(`lambdas/${l.name}`),
-        handler: `${l.name}.handler`
+        handler: `${l.name}.handler`,
+        environment: l.enviroments
       });
 
       branch.addMethod(l.funct, new aws_apigateway.LambdaIntegration(lambda));

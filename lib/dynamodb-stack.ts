@@ -8,7 +8,7 @@ export class TablesStack extends Stack {
 
     tables.map(t => {
       new aws_dynamodb.Table(this, t.name, {
-        tableName: `${project}-table-${t.name}`,
+        tableName: t.name,
         partitionKey: { name: t.pk, type: aws_dynamodb.AttributeType.STRING },
         sortKey: { name: t.sk, type: aws_dynamodb.AttributeType.STRING },
         billingMode: aws_dynamodb.BillingMode.PAY_PER_REQUEST,
