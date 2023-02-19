@@ -24,7 +24,7 @@ exports.handler = async function (event) {
         result.person = element.person;
       });
     }
-  });
+  }).promise();
 
   return {
     statusCode: 200,
