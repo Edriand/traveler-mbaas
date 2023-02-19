@@ -7,4 +7,4 @@ node_modules
 cdk.out
 
 # Context variables
-.context.json
+cdk.context.json
