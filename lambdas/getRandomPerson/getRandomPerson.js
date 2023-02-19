@@ -17,7 +17,7 @@ var params = {
 exports.handler = async function (event) { 
   await ddb.query(params, function(err, data) {
     if (err) {
-      statusCode = 400;
+      statusCode = 500;
       result = err;
       console.log("Error in query: ", err);
     } else {
