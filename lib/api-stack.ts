@@ -1,4 +1,4 @@
-import { Stack, StackProps, aws_lambda, aws_apigateway } from 'aws-cdk-lib';
+import { Stack, StackProps, aws_lambda, aws_apigateway, aws_iam } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { LambdaFunction } from '../interfaces/lambda.interface';
 
@@ -20,6 +20,15 @@ export class ApiStack extends Stack {
     
     console.log(api.url)
 
+    const dynamoQuery = new aws_iam.PolicyStatement({
+      actions: ['dynamodb:Query'],
+      resources: [`arn:aws:dynamodb:eu-west-1:*:table/${project}-table-*`],
+    });
+    
+    const policy = new aws_iam.Policy(this, 'query-dynamo', {
+      statements: [dynamoQuery]
+    })
+
     lambdas.map(l => {
       let branch = api.root.addResource(l.name);
 
@@ -30,6 +39,8 @@ export class ApiStack extends Stack {
         handler: `${l.name}.handler`,
         environment: l.enviroments
       });
+
+      lambda.role?.attachInlinePolicy(policy);
 
       branch.addMethod(l.funct, new aws_apigateway.LambdaIntegration(lambda));
     });
