@@ -4,6 +4,7 @@ AWS.config.update({region: process.env.REGION});
 const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 
 let result = {};
+let nPerson = 0;
 let statusCode = 200;
 
 var params = {
@@ -21,16 +22,14 @@ exports.handler = async function (event) {
       result = err;
       console.log("Error in query: ", err);
     } else {
-      data.Items.forEach(function(element) {
-        result.city = element.city;
-        result.person = element.person;
-      });
+      nPerson = Math.floor(Math.random() * data.Count);
+      result = data.Items;
     }
   }).promise();
 
   return {
     statusCode: statusCode,
     headers: { "Content-Type": "text/plain" },
-    body: JSON.stringify(AWS.DynamoDB.Converter.unmarshall(result))
+    body: JSON.stringify(AWS.DynamoDB.Converter.unmarshall(result[nPerson]))
   };
 };
