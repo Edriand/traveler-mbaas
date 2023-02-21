@@ -7,15 +7,15 @@ let result = {};
 let nPerson = 0;
 let statusCode = 200;
 
-var params = {
-  ExpressionAttributeValues: {
-    ':c': {S: 'valencia'}
-  },
-  KeyConditionExpression: 'city = :c',
-  TableName: process.env.TABLE
-};
+exports.handler = async function (event, context) { 
+  var params = {
+    ExpressionAttributeValues: {
+      ':c': {S: event['queryStringParameters']['city']}
+    },
+    KeyConditionExpression: 'city = :c',
+    TableName: process.env.TABLE
+  };
 
-exports.handler = async function (event) { 
   await ddb.query(params, function(err, data) {
     if (err) {
       statusCode = 500;

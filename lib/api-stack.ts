@@ -13,9 +13,9 @@ export class ApiStack extends Stack {
       handler: `default.handler`
     });
 
-    const api = new aws_apigateway.LambdaRestApi(this, 'api', {
+    const api = new aws_apigateway.LambdaRestApi(this, `${project}-api`, {
       handler: backend,
-      proxy: false
+      proxy: false 
     });
     
     console.log(api.url)
