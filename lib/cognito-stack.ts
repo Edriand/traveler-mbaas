@@ -59,7 +59,7 @@ export class CognitoStack extends Stack {
               domainPrefix: project,
             },
         });
-        console.log('userPoolId: ', pool.userPoolId);
+        console.log(pool.userPoolId);
     });
   }
 }
